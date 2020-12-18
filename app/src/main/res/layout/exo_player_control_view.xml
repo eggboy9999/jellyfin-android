@@ -130,6 +130,7 @@
         android:background="@drawable/ripple_background_circular"
         android:padding="@dimen/exo_bottom_controls_padding"
         android:src="@drawable/ic_screen_lock_white_24dp"
+        android:tint="?android:textColorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -141,6 +142,7 @@
         android:background="@drawable/ripple_background_circular"
         android:padding="@dimen/exo_bottom_controls_padding"
         android:src="@drawable/ic_music_note_white_24dp"
+        android:tint="?android:textColorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/lock_screen_button" />
 
@@ -151,7 +153,8 @@
         android:layout_marginBottom="@dimen/exo_bottom_controls_margin"
         android:background="@drawable/ripple_background_circular"
         android:padding="@dimen/exo_bottom_controls_padding"
-        android:src="@drawable/ic_closed_caption_white_24dp"
+        android:src="@drawable/ic_closed_captions_stateful_24dp"
+        android:tint="?android:textColorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/audio_streams_button" />
 
@@ -163,6 +166,7 @@
         android:background="@drawable/ripple_background_circular"
         android:padding="@dimen/exo_bottom_controls_padding"
         android:src="@drawable/ic_info_white_24dp"
+        android:tint="?android:textColorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/subtitles_button" />
 
@@ -175,6 +179,7 @@
         android:background="@drawable/ripple_background_circular"
         android:padding="@dimen/exo_bottom_controls_padding"
         android:src="@drawable/ic_fullscreen_enter_white_32dp"
+        android:tint="?android:textColorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

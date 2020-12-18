@@ -3,6 +3,7 @@ package org.jellyfin.mobile.player
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.ImageButton
 import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.core.view.forEach
@@ -26,7 +27,7 @@ class PlaybackMenus(
     private val context = playerBinding.root.context
     private val lockScreenButton: View by playerControlsBinding::lockScreenButton
     private val audioStreamsButton: View by playerControlsBinding::audioStreamsButton
-    private val subtitlesButton: View by playerControlsBinding::subtitlesButton
+    private val subtitlesButton: ImageButton by playerControlsBinding::subtitlesButton
     private val infoButton: View by playerControlsBinding::infoButton
     private val playbackInfo: TextView by playerBinding::playbackInfo
     private val audioStreamsMenu: PopupMenu = createAudioStreamsMenu()
@@ -53,6 +54,7 @@ class PlaybackMenus(
     }
 
     fun onItemChanged(item: JellyfinMediaSource) {
+        subtitlesButton.isEnabled = item.subtitleTracksCount > 0
         buildMenuItems(subtitlesMenu.menu, SUBTITLES_MENU_GROUP, item.subtitleTracksGroup, true)
         buildMenuItems(audioStreamsMenu.menu, AUDIO_MENU_GROUP, item.audioTracksGroup)
 
