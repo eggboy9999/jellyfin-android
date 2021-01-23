@@ -10,15 +10,6 @@ import android.support.v4.media.MediaBrowserCompat.MediaItem.FLAG_PLAYABLE
 import android.support.v4.media.MediaDescriptionCompat
 import android.support.v4.media.MediaMetadataCompat
 import androidx.media.MediaBrowserServiceCompat
-import org.jellyfin.apiclient.interaction.ApiClient
-import org.jellyfin.apiclient.model.dto.BaseItemDto
-import org.jellyfin.apiclient.model.dto.BaseItemType
-import org.jellyfin.apiclient.model.dto.ImageOptions
-import org.jellyfin.apiclient.model.entities.CollectionType
-import org.jellyfin.apiclient.model.entities.ImageType
-import org.jellyfin.apiclient.model.entities.SortOrder
-import org.jellyfin.apiclient.model.playlists.PlaylistItemQuery
-import org.jellyfin.apiclient.model.querying.*
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.media.*
 import org.jellyfin.mobile.utils.*

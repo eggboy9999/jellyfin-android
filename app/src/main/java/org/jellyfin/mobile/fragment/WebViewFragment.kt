@@ -23,7 +23,6 @@ import androidx.webkit.WebResourceErrorCompat
 import androidx.webkit.WebViewClientCompat
 import androidx.webkit.WebViewFeature
 import kotlinx.coroutines.launch
-import org.jellyfin.apiclient.interaction.ApiClient
 import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.bridge.ExternalPlayer
 import org.jellyfin.mobile.bridge.NativeInterface
@@ -45,7 +44,6 @@ import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
 class WebViewFragment : Fragment() {
-    val apiClient: ApiClient by inject()
     private val serverController: ServerController by inject()
     private val webappFunctionChannel: WebappFunctionChannel by inject()
     private val externalPlayer by lazy { ExternalPlayer(this) }
