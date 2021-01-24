@@ -12,6 +12,7 @@ import android.support.v4.media.MediaMetadataCompat
 import androidx.media.MediaBrowserServiceCompat
 import org.jellyfin.apiclient.api.operations.*
 import org.jellyfin.apiclient.model.api.*
+import org.jellyfin.mobile.AppPreferences
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.media.*
 import timber.log.Timber
@@ -19,6 +20,7 @@ import java.util.*
 
 class LibraryBrowser(
     private val context: Context,
+    private val appPreferences: AppPreferences,
     private val deviceInfo: DeviceInfo,
     private val itemsApi: ItemsApi,
     private val userViewsApi: UserViewsApi,
@@ -128,7 +130,7 @@ class LibraryBrowser(
                     searchItems(artistQuery, "MusicArtist")
                 }?.let { artistId ->
                     itemsApi.getItems(
-                        userId = UUID.randomUUID(), // FIXME Get userid
+                        userId = appPreferences.currentUserUuid,
                         artistIds = listOf(artistId),
                         includeItemTypes = listOf("Audio"),
                         sortBy = "Random",
@@ -147,7 +149,7 @@ class LibraryBrowser(
         // Fallback to generic search
         Timber.d("Searching for '$searchQuery'")
         val result by itemsApi.getItems(
-            userId = UUID.randomUUID(), // FIXME Get userid
+            userId = appPreferences.currentUserUuid,
             searchTerm = searchQuery,
             includeItemTypes = listOf("Audio"),
             recursive = true,
@@ -165,7 +167,7 @@ class LibraryBrowser(
      */
     private suspend fun searchItems(searchQuery: String, type: String): UUID? {
         val result by itemsApi.getItems(
-            userId = UUID.randomUUID(), // FIXME Get userid
+            userId = appPreferences.currentUserUuid,
             searchTerm = searchQuery,
             includeItemTypes = listOf(type),
             recursive = true,
@@ -182,7 +184,7 @@ class LibraryBrowser(
 
     private suspend fun getLibraries(): List<MediaBrowserCompat.MediaItem> {
         val userViews by userViewsApi.getUserViews(
-            userId = UUID.randomUUID(), // FIXME Get userid
+            userId = appPreferences.currentUserUuid!!
         )
 
         return userViews.items.orEmpty().asSequence()
@@ -232,7 +234,7 @@ class LibraryBrowser(
 
     private suspend fun getRecents(libraryId: UUID): List<MediaMetadataCompat>? {
         val result by itemsApi.getItems(
-            userId = UUID.randomUUID(), // FIXME Get userid
+            userId = appPreferences.currentUserUuid,
             parentId = libraryId,
             includeItemTypes = listOf("Audio"),
             filters = listOf(ItemFilter.IS_PLAYED),
@@ -254,7 +256,7 @@ class LibraryBrowser(
         filterGenre: UUID? = null
     ): List<MediaBrowserCompat.MediaItem>? {
         val result by itemsApi.getItems(
-            userId = UUID.randomUUID(), // FIXME Get userid
+            userId = appPreferences.currentUserUuid,
             parentId = libraryId,
             artistIds = filterArtist?.let(::listOf),
             genreIds = filterGenre?.let(::listOf),
@@ -272,7 +274,7 @@ class LibraryBrowser(
 
     private suspend fun getArtists(libraryId: UUID): List<MediaBrowserCompat.MediaItem>? {
         val result by artistsApi.getArtists(
-            userId = UUID.randomUUID(), // FIXME Get userid
+            userId = appPreferences.currentUserUuid,
             parentId = libraryId,
             // FIXME missing: sortBy = arrayOf(ItemSortBy.SortName)
             // FIXME missing: sortOrder = SortOrder.Ascending
@@ -287,7 +289,7 @@ class LibraryBrowser(
 
     private suspend fun getGenres(libraryId: UUID): List<MediaBrowserCompat.MediaItem>? {
         val result by genresApi.getGenres(
-            userId = UUID.randomUUID(), // FIXME Get userid
+            userId = appPreferences.currentUserUuid,
             parentId = libraryId,
             // FIXME missing: sortBy = arrayOf(ItemSortBy.SortName)
             // FIXME missing: sortOrder = SortOrder.Ascending
@@ -302,7 +304,7 @@ class LibraryBrowser(
 
     private suspend fun getPlaylists(libraryId: UUID): List<MediaBrowserCompat.MediaItem>? {
         val result by itemsApi.getItems(
-            userId = UUID.randomUUID(), // FIXME Get userid
+            userId = appPreferences.currentUserUuid,
             parentId = libraryId,
             includeItemTypes = listOf("Playlist"),
             sortBy = "DatePlayed",
@@ -318,7 +320,7 @@ class LibraryBrowser(
 
     private suspend fun getAlbum(albumId: UUID): List<MediaMetadataCompat>? {
         val result by itemsApi.getItems(
-            userId = UUID.randomUUID(), // FIXME Get userid
+            userId = appPreferences.currentUserUuid,
             parentId = albumId,
             sortBy = "SortName"
         )
@@ -329,7 +331,7 @@ class LibraryBrowser(
     private suspend fun getPlaylist(playlistId: UUID): List<MediaMetadataCompat>? {
         val result by playlistsApi.getPlaylistItems(
             playlistId = playlistId,
-            userId = UUID.randomUUID() // FIXME Get userid
+            userId = appPreferences.currentUserUuid!!
         )
 
         return result.extractItems("${LibraryPage.PLAYLIST}|$playlistId")
@@ -363,7 +365,7 @@ class LibraryBrowser(
         if (item.type == "Audio") {
             val uri = universalAudioApi.getUniversalAudioStreamUrl(
                 itemId = item.id,
-                userId = UUID.randomUUID(), // FIXME Get userid
+                userId = appPreferences.currentUserUuid,
                 deviceId = deviceInfo.id,
                 maxStreamingBitrate = 140000000,
                 container = listOf(

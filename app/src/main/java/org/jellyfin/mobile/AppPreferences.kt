@@ -6,6 +6,7 @@ import androidx.core.content.edit
 import org.jellyfin.mobile.settings.ExternalPlayerPackage
 import org.jellyfin.mobile.settings.VideoPlayerType
 import org.jellyfin.mobile.utils.Constants
+import java.util.*
 
 class AppPreferences(context: Context) {
     private val sharedPreferences: SharedPreferences =
@@ -24,6 +25,14 @@ class AppPreferences(context: Context) {
         set(value) {
             sharedPreferences.edit {
                 if (value != null) putLong(Constants.PREF_USER_ID, value) else remove(Constants.PREF_USER_ID)
+            }
+        }
+
+    var currentUserUuid: UUID?
+        get() = sharedPreferences.getString(Constants.PREF_USER_UUID, null)?.let(UUID::fromString)
+        set(value) {
+            sharedPreferences.edit {
+                if (value != null) putString(Constants.PREF_USER_UUID, value.toString()) else remove(Constants.PREF_USER_UUID)
             }
         }
 
